@@ -3,13 +3,29 @@ import java.util.HashMap;
 
 public class Game {
 
-	private Room currentRoom;
+	private static final String NPCPuppy = null;
+	private Place currentPlace;
+	public static Scanner input = new Scanner(System.in);
 
-	public Game() {
-		currentRoom = World.buildWorld();
+	public static void print(String message) {
+		System.out.println(message);
 	}
 
-	private static HashMap<String, Item> inventory = new HashMap<>();
+	public static void main1(String[] args) {
+		Puppy puppy = new Puppy();
+
+		for (int i = 0; i < 4; i++) { // interaction loop
+			puppy.talk();
+
+		}
+	}
+
+	public Game() {
+		currentPlace = World.buildWorld();
+	}
+
+	public static HashMap<String, Item> inventory = new HashMap<>();
+	public static HashMap<String, String> roomDescriptions = new HashMap<>();
 
 	public static HashMap<String, Item> getInventory() {
 		return inventory;
@@ -28,12 +44,11 @@ public class Game {
 	}
 
 	public static void runGame() {
-		Room currentRoom = World.buildWorld();
-		Scanner input = new Scanner(System.in);
+		Place currentPlace = World.buildWorld();
 
 		String command;
 		do {
-			System.out.println(currentRoom);
+			System.out.println(currentPlace);
 			System.out.print("Where do you want to go? ");
 			command = input.nextLine();
 			String[] words = command.split(" ");
@@ -45,24 +60,24 @@ public class Game {
 			case "s":
 			case "u":
 			case "d":
-				Room nextRoom = currentRoom.getExit(command.charAt(0));
-				if (nextRoom == null) {
+				Place nextPlace = currentPlace.getExit(command.charAt(0));
+				if (nextPlace == null) {
 					System.out.println("You can't go that way sorry!");
 				} else {
-					// Check if the room is locked
-					if (nextRoom.isLocked()) {
+					// Check if the Place is locked
+					if (nextPlace.isLocked()) {
 						// Check if the player has the key
 						Item key = inventory.get("key");
 						if (key != null) {
-							// Unlock the locked room
-							nextRoom.setLocked(false);
-							System.out.println("You used the key to unlock the room.");
-							currentRoom = nextRoom;
+							// Unlock the locked Place
+							nextPlace.setLocked(false);
+							System.out.println("You used the key to unlock the Place.");
+							currentPlace = nextPlace;
 						} else {
-							System.out.println("The room is locked. You need a key.");
+							System.out.println("The Place is locked. You need a key.");
 						}
 					} else {
-						currentRoom = nextRoom; // Move to the next room
+						currentPlace = nextPlace; // Move to the next Place
 					}
 				}
 				break;
@@ -74,7 +89,7 @@ public class Game {
 					System.out.println("You need to specify what you want to take!");
 				} else {
 					String itemName = words[1];
-					Item i = currentRoom.getItem(itemName);
+					Item i = currentPlace.getItem(itemName);
 					if (i == null) {
 						System.out.println("There's nothing to take.");
 					} else {
@@ -84,7 +99,7 @@ public class Game {
 				}
 				break;
 			case "look":
-				Item t = currentRoom.getItem(words[1]);
+				Item t = currentPlace.getItem(words[1]);
 				if (t == null) {
 					System.out.println("There's nothing there to look at.");
 				} else {
@@ -105,6 +120,13 @@ public class Game {
 				} else {
 					System.out.println("You don't have that item, try again.");
 				}
+			case "talk":
+				NPC NpcPuppy = currentPlace.getNPC(words[1]);
+				if (NpcPuppy != null) {
+					NpcPuppy.talk(); // to take????
+				} else {
+					System.out.println("There's no puppy to talk too, stop talking to yourself.");
+				}
 				break;
 			case "open":
 				Item itemTOpen = inventory.get(words[1]);
@@ -119,7 +141,7 @@ public class Game {
 				break;
 			}
 
-			// Update current room after handling direction commands // mm
+			// Update current Place after handling direction commands // mm
 
 		} while (!command.equals("x")); //
 

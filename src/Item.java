@@ -33,8 +33,8 @@ public class Item {
 
 	public void use() {
 		Game.print("You can't use that.");
-		
-	// hi	
+
+		// hi
 	}
 
 	public void open() {
@@ -43,12 +43,11 @@ public class Item {
 	}
 
 	public void open(HashMap<String, Item> inventory) {
-		// 
-		
+		//
+
 	}
 
-	public void put(String string, Item item) { //  
-		
-		
+	public void put(String string, Item item) { //
+
 	}
 }

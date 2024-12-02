@@ -4,7 +4,7 @@ public class Combination extends Item {
 
 	public Combination(String name, String description, String combinationCode) { // constructor with my three parem
 		super(name, description); // calls item class,
-		this.combinationCode = combinationCode; //store in combination code
+		this.combinationCode = combinationCode; // store in combination code
 	}
 
 	public String getCombinationCode() {
