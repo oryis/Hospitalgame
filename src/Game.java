@@ -18,6 +18,8 @@ public class Game {
 			puppy.talk();
 
 		}
+		String command = input.nextLine();
+		String[] words = command.split(" ");
 	}
 
 	public Game() {
@@ -41,6 +43,7 @@ public class Game {
 
 	public static Item getInventory(String itemName) {
 		return inventory.get(itemName);
+
 	}
 
 	public static void runGame() {
@@ -85,16 +88,13 @@ public class Game {
 				System.out.println(" Bye! Thanks for walking through my Game:). ");
 				break;
 			case "take":
-				if (words.length < 2) {
-					System.out.println("You need to specify what you want to take!");
-				} else {
-					String itemName = words[1];
-					Item i = currentPlace.getItem(itemName);
-					if (i == null) {
-						System.out.println("There's nothing to take.");
+				if (words.length > 1) {
+					Item item = currentPlace.getItem(words[1]);
+					if (item != null) {
+						inventory.put(item.getName(), item);
+						System.out.println("You picked up: " + item.getName());
 					} else {
-						inventory.put(i.getName(), i);
-						System.out.println("You pick up the " + i.getName());
+						System.out.println("No such item in the room.");
 					}
 				}
 				break;
@@ -121,13 +121,41 @@ public class Game {
 					System.out.println("You don't have that item, try again.");
 				}
 			case "talk":
-				NPC NpcPuppy = currentPlace.getNPC(words[1]);
-				if (NpcPuppy != null) {
-					NpcPuppy.talk(); // to take????
+				if (words.length < 2) {
+					System.out.println("Talk to whom?");
+					return;
+				}
+
+				String npcName = words[1];
+				NPC npc = currentPlace.getNPC(npcName);
+
+				if (npc != null) {
+					npc.talk();
+
+					// Handle the nurseGhost riddle separately
+					if (npc.getType().equals("nurseGhost")) {
+						nurseGhost nurse = (nurseGhost) npc;
+
+						if (!nurse.hasSolvedRiddle()) {
+							System.out.println(
+									"What has a key but no lock, a space but no room, and an entrance but no door?");
+							String playerResponse = input.nextLine();
+
+							if (playerResponse.equalsIgnoreCase("A keyboard")) {
+								System.out.println("Correct! Here, take this.");
+								Game.getInventory().put("lockpick",
+										new Item("lockpick", "A lockpick for one of the doors"));
+								nurse.setSolvedRiddle(true);
+							} else {
+								System.out.println("Incorrect. Try again.");
+							}
+						}
+					}
 				} else {
-					System.out.println("There's no puppy to talk too, stop talking to yourself.");
+					System.out.println("There's no such NPC in this place.");
 				}
 				break;
+
 			case "open":
 				Item itemTOpen = inventory.get(words[1]);
 				if (itemTOpen != null) {
@@ -146,6 +174,11 @@ public class Game {
 		} while (!command.equals("x")); //
 
 		input.close();
+
+	}
+
+	private static void say(String string) {
+		// TODO Auto-generated method stub
 
 	}
 

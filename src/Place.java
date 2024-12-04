@@ -1,13 +1,14 @@
 import java.util.HashMap;
 
 public class Place {
+	
 	private static String Response = null;
 	// OBJECT variables - usually private
 
 	private String description; // Place description to show players
 	// object reference - set to null by default
 	private HashMap<String, Item> items; // updating to hash maps to store items
-	private HashMap<String, NPC> npcs;
+	 private HashMap<String, NPC> npcs = new HashMap<>();
 	private Place east; // reference to Place to east
 	private Place west; // reference to Place west
 	private Place north; // reference to Place north
@@ -23,7 +24,8 @@ public class Place {
 		this.npcs = new HashMap<>();
 
 	}
-
+	
+	
 	// Place hallway = currentPlace place("Hallway", "a dark hallway with lots of
 	// space to run around");
 	// Puppy puppy = new Puppy();
@@ -148,6 +150,11 @@ public class Place {
 
 	public void addExit(Place generalWard, String string) {
 
+	}
+
+	public String getItems() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

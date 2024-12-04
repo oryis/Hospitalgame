@@ -12,7 +12,7 @@ public class Safe extends Combination {
 	@Override
 	public void open() {
 		if (!isOpen) { // see if the safe isn't already opened
-			Item combinationItem = getInventory("combination"); // gets combination item from inventory
+			Item combinationItem = Game.getInventory ("combination"); // gets combination item from inventory
 			if (getCombinationCode() != null) { // checks if code is null
 				Combination combinationCode = (Combination) combinationItem;
 				if (combinationCode.getCombinationCode().equals(this.combination)) { // compares combination with safe

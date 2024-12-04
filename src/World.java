@@ -24,7 +24,6 @@ public class World {
 		Item lockpick = new Item("lockpick", "A lockpick for one of the doors");
 		Item map = new Item("map", "A Map of the Hosiptal");
 		Item meds = new Item("meds", "unknown meds");
-		
 
 		// add items to Place
 		lobby.putItem(diamond);
@@ -34,16 +33,20 @@ public class World {
 		nursestation.putItem(lockpick);
 		suite.putItem(notebook);
 		hallway.putItem(map);
-		
+		nurseGhost Ghost = new nurseGhost();
 		Puppy Puppy = new Puppy();
 		hallway.addNPC(Puppy);
+		lobby.addNPC(Ghost);
 
-		
+		// Add the key to the lobby
+		lobby.putItem(key);
+
 		// my safe and combination
 		Safe supplyCabinet = new Safe("Supply Cabinet", "A locked cabinet filled with medical supplies.", "");
 		Combination combination = new Combination("Combination", "A mysterious combination", "4509"); // did this wrong
 																										// x.x
 
+		
 		// safe and combination Place
 		nursestation.addItem(supplyCabinet);
 		nursestation.addItem(combination);

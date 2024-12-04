@@ -9,36 +9,37 @@ public class Puppy extends NPC {
 		super("puppy", "A hideous puppy wags his tail.");
 		this.talkCount = 0;
 		this.ranAway = false;
+		
 	}
-
 	@Override
+	public Object getType() {
+	    return "puppy";
+	}
 	public void talk() {
-		// if (ranAway) {
-		// say("The puppy ran away and doesn't come back.");
-		// return;
-		// }
+		if (ranAway) {
+			say("The puppy ran away and doesn't come back.");
+			return; // Exit the method if the puppy has run away
+		}
+
 		talkCount++;
 		switch (talkCount) {
-		case 1: // dialog 1
+		case 1:
 			say("Hi! I'm an adorable puppy!");
 			String[] options1 = { "Yes you are! Who's a good boy?", "Ew, no. You're actually kinda hideous." };
 			getResponse(options1);
 			break;
-
-		case 2: // dialog 2
+		case 2:
 			say("Hey! Wanna play fetch? Say yes! Say yes!");
 			String[] options2 = { "Yes! I love fetch!", "No. I don't like playing fetch or like puppies." };
 			getResponse(options2);
 			break;
-
-		default: // dialog 3
+		default:
 			say("Yip");
 			Game.print("The puppy wags his tail.");
 			break;
 		}
-
-		// talkCount++;
 	}
+	// talkCount++;
 
 	@Override
 	public void response(int option) {
@@ -54,7 +55,6 @@ public class Puppy extends NPC {
 				break;
 			}
 			break;
-
 		case 2: // should respond to dialog 2
 			switch (option) {
 			case 1:

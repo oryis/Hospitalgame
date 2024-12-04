@@ -40,6 +40,15 @@ public class NPC {
 	}
 
 	public String getdesc() {
+		return desc;
+	}
+
+	private void NpcPuppy() {
+		return;
+	}
+
+	public Object getType() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
