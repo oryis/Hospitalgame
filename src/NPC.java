@@ -24,6 +24,7 @@ public class NPC {
 	public void talk() {
 		Game.print("You can't talk to " + name + ".");
 	}
+	
 
 	public void response(int option) {
 // This method intentionally left blank.
@@ -48,6 +49,11 @@ public class NPC {
 	}
 
 	public Object getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String interact() {
 		// TODO Auto-generated method stub
 		return null;
 	}

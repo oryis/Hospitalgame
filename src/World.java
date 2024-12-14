@@ -1,84 +1,105 @@
+import java.util.HashMap;
+
 public class World {
 
+	// Using HashMap to store rooms (key = room name, value = Place object)
+	public static HashMap<String, Place> rooms = new HashMap<>();
+
 	public static Place buildWorld() {
-		Place lobby = new Place("lobby", "You are in the Lobby.");
-		Place treatmentPlace = new Place("treatmentPlace", "You are in the Treatment Room.");
-		Place nursestation = new Place("nursestation", "You are in the Nurse Station. ");
-		Place restPlace = new Place("restPlace", "You are in the Rest Place.");
-		Place surgeryPlace = new Place("surgeryPlace", "You are in the Surgery Room.");
-		Place suite = new Place("suite", "You are in the Patient Suite");
-		Place hallway = new Place("Hallway", "You are in the Hallway");
-		Place xRay = new Place("xRay", "You are in the X-Ray Place");
-		Place icu = new Place("icu", "You are in the ICU");
-		Place pediatric = new Place("pediatric", "You are in the Pediatric Room");
-		Place recovery = new Place("recovery", "You are in the Recovery Room");
-		Place emergency = new Place("emergency", "You are in the X-Ray Room");
-		Place isolation = new Place("isolation", "You are in the Isolation Room");
-		Place generalWard = new Place("GeneralWard", "You are The General staff Room");
-		// set items and description
+		// Create all Place objects with descriptions
+		Place lobby = new Place("lobby");
+		Place treatmentRoom = new Place("treatmentRoom");
+		Place nurseStation = new Place("nurseStation");
+		Place restRoom = new Place("restRoom");
+		Place surgeryRoom = new Place("surgeryRoom");
+		Place suite = new Place("suite");
+		Place hallway = new Place("hallway");
+		Place xRay = new Place("xRay");
+		Place icu = new Place("icu");
+		Place pediatric = new Place("pediatric");
+		Place recovery = new Place("recovery");
+		Place emergency = new Place("emergency");
+		Place isolation = new Place("isolation");
+		Place generalWard = new Place("generalWard");
 
-		Item diamond = new Item("diamond", "A sparkling diamond");
-		Item brightlight = new Item("Light", "Bright light");
-		Item notebook = new Item("notebook", "A small notebook");
-		Item key = new Item("key", "blue metal key"); // adding items to Places
-		Item lockpick = new Item("lockpick", "A lockpick for one of the doors");
-		Item map = new Item("map", "A Map of the Hosiptal");
-		Item meds = new Item("meds", "unknown meds");
+		// Add rooms to the HashMap
+		rooms.put("lobby", lobby);
+		rooms.put("treatmentRoom", treatmentRoom);
+		rooms.put("nurseStation", nurseStation);
+		rooms.put("restRoom", restRoom);
+		rooms.put("surgeryRoom", surgeryRoom);
+		rooms.put("suite", suite);
+		rooms.put("hallway", hallway);
+		rooms.put("xRay", xRay);
+		rooms.put("icu", icu);
+		rooms.put("pediatric", pediatric);
+		rooms.put("recovery", recovery);
+		rooms.put("emergency", emergency);
+		rooms.put("isolation", isolation);
+		rooms.put("generalWard", generalWard);
 
-		// add items to Place
+		// Create items
+		Item diamond = new Item("diamond", "A sparkling diamond.");
+		Item brightLight = new Item("light", "A bright light.");
+		Item notebook = new Item("notebook", "A small notebook.");
+		Item key = new Item("key", "A blue metal key.");
+		Item lockpick = new Item("lockpick", "A lockpick for one of the doors.");
+		Item map = new Item("map", "A map of the hospital.");
+		Item meds = new Item("meds", "Unknown medications.");
+		Item bandaid = new Item("bandaid", "A simple band-aid.");
+		Item syringe = new Item("syringe", "A medical syringe.");
+
+		// Adding new items
+		Item paperClip = new Item("paper clip", "A small paper clip.");
+		Item bobbyPin = new Item("bobby pin", "A small bobby pin.");
+		Item lightWire = new Item("light wire", "A piece of light wire.");
+		Item axe = new Item("axe", "A small axe.");
+		Item hammer = new Item("hammer", "A small hammer.");
+		Item needle = new Item("needle", "A small needle.");
+		Item notebookKey = new Item("notebook key", "A key found inside a notebook.");
+
+		// Add items to rooms
 		lobby.putItem(diamond);
-		treatmentPlace.putItem(key);
-		surgeryPlace.putItem(meds);
-		restPlace.putItem(brightlight);
-		nursestation.putItem(lockpick);
+		treatmentRoom.putItem(key);
+		surgeryRoom.putItem(meds);
+		restRoom.putItem(brightLight);
+		nurseStation.putItem(lockpick);
 		suite.putItem(notebook);
 		hallway.putItem(map);
-		nurseGhost Ghost = new nurseGhost();
-		Puppy Puppy = new Puppy();
-		hallway.addNPC(Puppy);
-		lobby.addNPC(Ghost);
 
-		// Add the key to the lobby
-		lobby.putItem(key);
+		// Add NPCs
+		nurseGhost ghost = new nurseGhost();
+		Puppy puppy = new Puppy();
+		hallway.addNPC(puppy);
+		lobby.addNPC(ghost);
 
-		// my safe and combination
-		Safe supplyCabinet = new Safe("Supply Cabinet", "A locked cabinet filled with medical supplies.", "");
-		Combination combination = new Combination("Combination", "A mysterious combination", "4509"); // did this wrong
-																										// x.x
+		// Add a safe and combination to nurse station
+		Safe supplyCabinet = new Safe("A locked cabinet filled with medical supplies.", true);
+		Combination combination = new Combination("Combination", "A mysterious combination", "4509");
 
-		
-		// safe and combination Place
-		nursestation.addItem(supplyCabinet);
-		nursestation.addItem(combination);
+		nurseStation.putItem(combination);
 
-		lobby.addExit(suite, 'e'); // lobby connects to patient suite
+		supplyCabinet.putItem(bandaid);
+		supplyCabinet.putItem(syringe);
 
-		restPlace.addExit(suite, 's'); // restPlace connects to suite
-		suite.addExit(restPlace, 'n'); // suite connects to restPlace
+		// Add exits between places
+		lobby.addExit(suite, 'e');
+		restRoom.addExit(suite, 's');
+		suite.addExit(restRoom, 'n');
+		lobby.addExit(treatmentRoom, 'w');
+		treatmentRoom.addExit(lobby, 'e');
+		treatmentRoom.addExit(nurseStation, 'n');
+		nurseStation.addExit(treatmentRoom, 's');
+		surgeryRoom.addExit(hallway, 'e');
+		hallway.addExit(surgeryRoom, 'w');
+		surgeryRoom.addExit(recovery, 'e');
+		recovery.addExit(surgeryRoom, 'w');
+		lobby.addExit(hallway, 'n');
+		hallway.addExit(lobby, 's');
+		hallway.addExit(generalWard, 'e');
+		icu.addExit(generalWard, 'w');
 
-		lobby.addExit(treatmentPlace, 'w'); // lobby connects to treatment
-		treatmentPlace.addExit(lobby, 'e');// treatment connects to lobby
-
-		treatmentPlace.addExit(nursestation, 'n'); // TREATMENT connects to nurse
-		treatmentPlace.setLocked(true);
-
-		nursestation.addExit(treatmentPlace, 's'); // nurse to treatment
-
-		surgeryPlace.addExit(hallway, 'e'); // surgery connects to hallway
-		hallway.addExit(surgeryPlace, 'w'); // hallway connects to surgery
-
-		surgeryPlace.addExit(recovery, 'e'); // surgery connects to recovery?
-		recovery.addExit(surgeryPlace, 'w'); // recovery connect to surgery?
-
-		treatmentPlace.addExit(nursestation, 'n'); // TREATMENT connects to nurse
-		treatmentPlace.setLocked(true);
-
-		lobby.addExit(hallway, 'u'); // lobby connects to hallway if u go up
-		hallway.addExit(lobby, 'd'); // hallway connects to lobby going down
-
-		hallway.addExit(generalWard, "e");
-		icu.addExit(generalWard, "w");
-		return lobby; // lobby
+		// Return the starting place (lobby)
+		return lobby;
 	}
-
 }

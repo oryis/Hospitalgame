@@ -2,19 +2,20 @@ import java.util.ArrayList;
 
 public class Puppy extends NPC {
 
-	private int talkCount; // talk
+	private int talkCount; // talk count
 	private boolean ranAway;
 
 	public Puppy() {
 		super("puppy", "A hideous puppy wags his tail.");
 		this.talkCount = 0;
 		this.ranAway = false;
-		
 	}
+
 	@Override
 	public Object getType() {
-	    return "puppy";
+		return "puppy";
 	}
+
 	public void talk() {
 		if (ranAway) {
 			say("The puppy ran away and doesn't come back.");
@@ -25,13 +26,11 @@ public class Puppy extends NPC {
 		switch (talkCount) {
 		case 1:
 			say("Hi! I'm an adorable puppy!");
-			String[] options1 = { "Yes you are! Who's a good boy?", "Ew, no. You're actually kinda hideous." };
-			getResponse(options1);
+			getResponse(new String[] { "Yes you are! Who's a good boy?", "Ew, no. You're actually kinda hideous." });
 			break;
 		case 2:
 			say("Hey! Wanna play fetch? Say yes! Say yes!");
-			String[] options2 = { "Yes! I love fetch!", "No. I don't like playing fetch or like puppies." };
-			getResponse(options2);
+			getResponse(new String[] { "Yes! I love fetch!", "No. I don't like playing fetch or like puppies." });
 			break;
 		default:
 			say("Yip");
@@ -39,12 +38,14 @@ public class Puppy extends NPC {
 			break;
 		}
 	}
-	// talkCount++;
 
-	@Override
+	public void say(String message) {
+		Game.print(message); // Use the Game class's print method
+	}
+
 	public void response(int option) {
 		switch (talkCount) {
-		case 1: // should respond to dialog 1
+		case 1: // respond to dialog 1
 			switch (option) {
 			case 1:
 				say("I am! I'm a good boy!");
@@ -55,7 +56,7 @@ public class Puppy extends NPC {
 				break;
 			}
 			break;
-		case 2: // should respond to dialog 2
+		case 2: // respond to dialog 2
 			switch (option) {
 			case 1:
 				say("Yay! Fetch!");

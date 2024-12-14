@@ -1,44 +1,40 @@
-public class Safe extends Combination {
+import java.util.HashMap;
 
-	private boolean isOpen;
-	private String combination;
+public class Safe extends Place {
+    private HashMap<String, Item> safeItems; // Items inside the safe
+    private boolean isLocked;
 
-	public Safe(String name, String description, String combination) {
-		super(name, description, combination);
-		this.combination = combination;
-		isOpen = false;
-	}
+    // Constructor
+    public Safe(String desc, boolean locked) {
+        super(desc);
+        this.safeItems = new HashMap<>();
+        this.isLocked = locked;
+    }
 
-	@Override
-	public void open() {
-		if (!isOpen) { // see if the safe isn't already opened
-			Item combinationItem = Game.getInventory ("combination"); // gets combination item from inventory
-			if (getCombinationCode() != null) { // checks if code is null
-				Combination combinationCode = (Combination) combinationItem;
-				if (combinationCode.getCombinationCode().equals(this.combination)) { // compares combination with safe
-																						// combination code
-					isOpen = true; // tells u that its open
-					System.out.println("YAYY CONGRATS! you find the sparkling diamond inside! and picked it up."); // you find it
-					getInventory(combination).put("diamond", new Item("diamond", "A sparkling diamond"));
-				} else {
-					Game.print("The combination is incorrect.");
-				}
-			} else {
-				Game.print("You don't have the combination.");
-			}
-		} else {
-			Game.print("The safe is already open.");
-		}
-	}
+    public boolean isLocked() {
+        return isLocked;
+    }
 
-	private Item getInventory(String string) {
-		
-		return null;
-	}
+    public void unlock() {
+        isLocked = false;
+    }
 
-	private boolean isOpen() {
+    public void lock() {
+        isLocked = true;
+    }
 
-		return isOpen;
-	}
+    public void putItem(Item item) {
+        if (item != null) {
+            safeItems.put(item.getName(), item); // Add item to the safe
+        }
+    }
+
+    public Item getItem(String name) {
+        return safeItems.get(name); // Retrieve item from the safe
+    }
+
+    public void removeItem(String name) {
+        safeItems.remove(name); // Remove item from the safe
+    }
 }
-//
+

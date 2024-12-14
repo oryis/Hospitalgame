@@ -1,90 +1,80 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class Place {
-	
+
 	private static String Response = null;
-	// OBJECT variables - usually private
 
-	private String description; // Place description to show players
-	// object reference - set to null by default
-	private HashMap<String, Item> items; // updating to hash maps to store items
-	 private HashMap<String, NPC> npcs = new HashMap<>();
-	private Place east; // reference to Place to east
-	private Place west; // reference to Place west
-	private Place north; // reference to Place north
-	private Place south; // reference to Place south
-	private Place up; // reference up
-	private Place down; // exist
+	private String description;
+	private HashMap<String, Item> items;
+	private HashMap<String, NPC> npcs = new HashMap<>();
+	private Place east;
+	private Place west;
+	private Place north;
+	private Place south;
+	private Place up;
+	private Place down;
 	private boolean Locked;
+	private String keyItem;
 
-	// constructor method - initialize Place description
-	public Place(String desc, String n) { // constructor method
+	public Place(String desc) {
 		description = desc;
-		items = new HashMap<>(); // all
+		items = new HashMap<>();
 		this.npcs = new HashMap<>();
-
 	}
-	
-	
-	// Place hallway = currentPlace place("Hallway", "a dark hallway with lots of
-	// space to run around");
-	// Puppy puppy = new Puppy();
-	// hallway.addNPC("puppy" puppy);
 
-	// object method
-
-	// object methods
-
-	public Place getExit(char d) { // get method, return description
-		if (d == 'e')
+	public Place getExit(char d) {
+		switch (d) {
+		case 'e':
 			return east;
-		else if (d == 'w')
+		case 'w':
 			return west;
-		else if (d == 'n')
+		case 'n':
 			return north;
-		else if (d == 's')
+		case 's':
 			return south;
-		else if (d == 'u')
+		case 'u':
 			return up;
-		else if (d == 'd')
+		case 'd':
 			return down;
-		else
-			return null; //
+		default:
+			return null;
+		}
 	}
-	// updates one of the Places variables
-	// Character parameter identifies which variable
-	// to update (example: 'e' means update the east
-	//
-	// need to update this
 
 	public void addExit(Place c, char d) {
-		if (d == 'e')
+		switch (d) {
+		case 'e':
 			east = c;
-		else if (d == 'w')
+			break;
+		case 'w':
 			west = c;
-		else if (d == 'n')
+			break;
+		case 'n':
 			north = c;
-		else if (d == 's')
+			break;
+		case 's':
 			south = c;
-		else if (d == 'u')
+			break;
+		case 'u':
 			up = c;
-		else if (d == 'd')
+			break;
+		case 'd':
 			down = c;
+			break;
+		}
 	}
 
-	// Formats the objects data as a string.
-	// returns the string.
 	public String toString() {
 		return description;
 	}
 
 	public Item getItem(String name) {
 		return items.get(name);
-	} //
+	}
 
 	public void putItem(Item i) {
-		items.put(Item.getName(), i);
-
+		items.put(i.getName(), i);
 	}
 
 	public boolean isLocked() {
@@ -95,26 +85,34 @@ public class Place {
 		Locked = locked;
 	}
 
-	public void unlock() {
+	public void lockRoom(String keyItem) {
+		this.Locked = true;
+		this.keyItem = keyItem;
+	}
+
+	public void unlockRoom() {
+		this.Locked = false;
+		this.keyItem = null;
+	}
+
+	public String getKeyItem() {
+		return keyItem;
 	}
 
 	public String getName() {
-		return getName();
-
+		return description; // This returns the description, which acts as the name
 	}
 
-	public void setName(String name) {
+	public void addItem(Item supplyCabinet) {
+		items.put(supplyCabinet.getName(), supplyCabinet);
 	}
 
-	public void addItem(Safe supplyCabinet) {
-	}
-
-	public void addItem(Combination combination) { //
-
+	public void addItem(Combination combination) {
+		items.put(combination.getName(), combination);
 	}
 
 	public void addNPC(NPC puppy) {
-		npcs.put(puppy.getName(), puppy); // putting this here for now
+		npcs.put(puppy.getName(), puppy);
 	}
 
 	public NPC getNPC(String name) {
@@ -126,18 +124,18 @@ public class Place {
 	}
 
 	public void removeNPC(NPC npc) {
-		npcs.remove(npc);
+		npcs.remove(npc.getName());
 	}
 
 	public void showNPCS() {
-	    if (npcs.isEmpty()) {
-	        System.out.println("There are no NPCs here.");
-	    } else {
-	        System.out.println("You see:");
-	        for (NPC npc : npcs.values()) {
+		if (npcs.isEmpty()) {
+			System.out.println("There are no NPCs here.");
+		} else {
+			System.out.println("You see:");
+			for (NPC npc : npcs.values()) {
 				System.out.println("- " + npc.getName() + ": " + npc.getdesc());
-	        }
-	    }
+			}
+		}
 	}
 
 	public String getDescripton() {
@@ -148,13 +146,38 @@ public class Place {
 		return npcs;
 	}
 
-	public void addExit(Place generalWard, String string) {
-
+	public void addExit(Place place, String direction) {
+		switch (direction) {
+		case "east":
+			east = place;
+			break;
+		case "west":
+			west = place;
+			break;
+		case "north":
+			north = place;
+			break;
+		case "south":
+			south = place;
+			break;
+		case "up":
+			up = place;
+			break;
+		case "down":
+			down = place;
+			break;
+		}
 	}
 
 	public String getItems() {
-		// TODO Auto-generated method stub
-		return null;
+		return items.keySet().toString();
 	}
 
+	public String displayDetails() {
+		return description + "\nItems: " + getItems() + "\nNPCs: " + getNPCs().keySet().toString();
+	}
+
+	public boolean hasNPC(String npcName) {
+		return npcs.containsKey(npcName);
+	}
 }
